@@ -4,6 +4,13 @@ echo "Boot script loaded from devtype:${devtype} devnum:${devnum} devplist:${dev
 
 imagefile="Image"
 
+dtb_0x201="x5-evb.dtb"
+dtb_0x202="x5-evb-v2.dtb"
+dtb_0x312="x5rdk.dtb"
+
+setenv fdtfile "${dtb_${hb_board_id}}"
+echo fdtfile = ${fdtfile}
+
 # setting bootargs
 flash_partitions="ubi.mtd=2,2048 mtdparts=hr_nand.0:6291456@0x0(miniboot),2097152@0x600000(env) "
 rootfs_args="rootfstype=ext4 rw rootwait root=/dev/mmcblk${devnum}p${devplist}"
