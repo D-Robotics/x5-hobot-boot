@@ -4,11 +4,12 @@ echo "Boot script loaded from devtype:${devtype} devnum:${devnum} devplist:${dev
 
 imagefile="Image"
 
-dtb_0x201="x5-evb.dtb"
-dtb_0x202="x5-evb-v2.dtb"
-dtb_0x312="x5rdk.dtb"
+setenv dtb_chose 'if test "${hb_board_id}" = "0x0201"; then echo "Board is X5 EVB V1"; setenv fdtfile "x5-evb.dtb"; elif test "${hb_board_id}" = "0x0202"; then echo "Board is X5 EVB V2"; setenv fdtfile "x5-evb-v2.dtb"; ' \
+    'elif test "${hb_board_id}" = "0x0313"; then echo "Board is X5 RDK V1 4GB DDR"; setenv fdtfile "x5-rdk-v1.dtb"; elif test "${hb_board_id}" = "0x0315"; then echo "Board is X5 RDK V1 8GB DDR"; setenv fdtfile "x5-rdk-v1.dtb"; ' \
+    'else echo "Unknown board ID, use x5-evb-v2.dtb default"; setenv fdtfile "x5-evb-v2.dtb"; fi; '
 
-setenv fdtfile "${dtb_${hb_board_id}}"
+run dtb_chose
+
 echo fdtfile = ${fdtfile}
 
 # setting bootargs
