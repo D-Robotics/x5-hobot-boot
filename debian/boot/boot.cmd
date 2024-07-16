@@ -5,7 +5,7 @@ echo "Boot script loaded from devtype:${devtype} devnum:${devnum} devplist:${dev
 imagefile="Image"
 
 setenv dtb_chose 'if test "${hb_board_id}" = "0x0201"; then echo "Board is X5 EVB V1"; setenv fdtfile "x5-evb.dtb"; elif test "${hb_board_id}" = "0x0202"; then echo "Board is X5 EVB V2"; setenv fdtfile "x5-evb-v2.dtb"; ' \
-    'elif test "${hb_board_id}" = "0x0313"; then echo "Board is X5 RDK V1 4GB DDR"; setenv fdtfile "x5-rdk-v1.dtb"; elif test "${hb_board_id}" = "0x0315"; then echo "Board is X5 RDK V1 8GB DDR"; setenv fdtfile "x5-rdk-v1.dtb"; ' \
+    'elif test "${hb_board_id}" = "0x0301"; then echo "Board is X5 RDK"; setenv fdtfile "x5-rdk.dtb";  ' \
     'else echo "Unknown board ID, use x5-evb-v2.dtb default"; setenv fdtfile "x5-evb-v2.dtb"; fi; '
 
 run dtb_chose
@@ -13,9 +13,8 @@ run dtb_chose
 echo fdtfile = ${fdtfile}
 
 # setting bootargs
-flash_partitions="ubi.mtd=2,2048 mtdparts=hr_nand.0:6291456@0x0(miniboot),2097152@0x600000(env) "
 rootfs_args="rootfstype=ext4 rw rootwait root=/dev/mmcblk${devnum}p${devplist}"
-setenv bootargs "console=tty1 console=ttyS0,115200 ${rootfs_args} ${flash_partitions}"
+setenv bootargs "console=tty1 console=ttyS0,115200 ${rootfs_args}"
 echo bootargs = ${bootargs}
 
 echo Loading fdt file: ${prefix}hobot/${fdtfile}
