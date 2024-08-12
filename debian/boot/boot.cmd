@@ -21,7 +21,7 @@ echo Loading fdt file: ${prefix}hobot/${fdtfile}
 ext4load ${devtype} ${devnum}:${devplist} ${fdt_addr_r} ${prefix}hobot/${fdtfile}
 
 echo Apply device tree overlay
-dtoverlay ${fdt_addr_r} 0x3D00000 ${prefix}config.txt 0x3E00000
+dtoverlay ${fdt_addr_r} 0x85000000 ${prefix}config.txt 0x85800000
 
 echo Loading kernel: ${prefix}${imagefile}
 ext4load ${devtype} ${devnum}:${devplist} ${kernel_addr_r} ${prefix}${imagefile}
