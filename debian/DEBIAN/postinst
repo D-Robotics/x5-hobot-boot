@@ -2,12 +2,16 @@
 
 depmod -a 6.1.83
 
-config_file="/lib/modules-load.d/10-hobot_modules.conf"
+systemctl enable hobot-modules-load.service
 
+# Distinguish whether it is installed on the board or pre-installed on the PC
 if [ ! -f "/sys/class/socinfo/soc_uid" ]; then
     exit 0
 fi
 
+systemctl start hobot-modules-load.service
+
+config_file="/lib/modules-load.d/10-hobot_modules.conf"
 # for modname in `cat ${config_file}`
 while read modname
 do

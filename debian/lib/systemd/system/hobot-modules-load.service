@@ -1,0 +1,12 @@
+[Unit]
+Description=Load Kernel Modules Based on Board ID
+Before=getty.target system-getty.slice
+
+[Service]
+Type=oneshot
+ExecStart=/etc/init.d/S70loadko start
+RemainAfterExit=yes
+TimeoutStartSec=2min
+
+[Install]
+WantedBy=multi-user.target

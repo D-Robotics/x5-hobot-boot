@@ -1,0 +1,78 @@
+#!/bin/sh
+
+start() {
+	BOARD_ID=$(cat /sys/class/socinfo/board_id)
+	echo "<6>Starting load kernel driver, board ID: $BOARD_ID ..." > /dev/kmsg
+	
+	modprobe vs_isc
+	modprobe vs_cam_ctrl
+	modprobe vs_csi_wrapper
+	modprobe hobot_osd
+	modprobe hobot_vin_vnode
+	modprobe hobot_vin_vcon
+	modprobe vs_sif_nat
+	modprobe hobot_sensor
+	modprobe hobot_mipiphy
+	modprobe hobot_mipicsi
+	modprobe hobot_mipidbg
+	modprobe vs_isp_nat
+	modprobe vs_vse_nat
+	modprobe hobot_deserial
+	modprobe hobot_gdc
+	modprobe hobot_isi_sensor
+	modprobe hobot_codec_vnode
+	modprobe hobot_lpwm
+	modprobe hobot_vpu
+	modprobe hobot_jpu
+
+	# bpu driver
+	modprobe bpu_hw_io_x5
+
+	case "$BOARD_ID" in
+		"202")
+			# EVB_1B
+			modprobe panel-jc-050hd134
+			modprobe galcore
+			modprobe vio_n2d
+			modprobe lontium_lt8618
+			modprobe vs-x5-syscon-bridge
+			modprobe drm_kms_helper
+			modprobe vs_drm
+			;;
+		"301")
+			# RDK X5
+			modprobe rtc-hpu3501
+			modprobe designware_i2s
+			modprobe es8311
+			modprobe snd-soc-hobot-sound-duplex-host
+			modprobe panel-wh-cm480
+			modprobe galcore
+			modprobe vio_n2d
+			modprobe sii902x
+			modprobe vs-x5-syscon-bridge
+			modprobe drm_kms_helper
+			modprobe vs_drm
+			;;
+		*)
+			echo "<6>[LoadKo]Unknown board ID: $BOARD_ID. " \
+				"Please contact the development team to " \
+				"provide support for this hardware." > /dev/kmsg
+			;;
+		esac
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		;;
+	restart)
+		;;
+	*)
+		echo "Usage: $0 {start | stop | restart}"
+		exit 1
+		;;
+esac
+
+exit 0
