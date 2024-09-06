@@ -6,7 +6,8 @@ imagefile="Image"
 
 setenv dtb_chose 'if test "${hb_board_id}" = "0x0201"; then echo "Board is X5 EVB V1"; setenv fdtfile "x5-evb.dtb"; elif test "${hb_board_id}" = "0x0202"; then echo "Board is X5 EVB V2"; setenv fdtfile "x5-evb-v2.dtb"; ' \
     'elif test "${hb_board_id}" = "0x0301"; then echo "Board is X5 RDK"; setenv fdtfile "x5-rdk.dtb";  ' \
-    'else echo "Unknown board ID, use x5-evb-v2.dtb default"; setenv fdtfile "x5-evb-v2.dtb"; fi; '
+    'elif test "${hb_board_id}" = "0x0302"; then echo "Board is X5 RDK V1.0"; setenv fdtfile "x5-rdk-v1p0.dtb";  ' \
+    'else echo "Unknown board ID, use x5-rdk.dtb default"; setenv fdtfile "x5-rdk.dtb"; fi; '
 
 run dtb_chose
 

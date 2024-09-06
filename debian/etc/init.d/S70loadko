@@ -39,7 +39,7 @@ start() {
 			modprobe drm_kms_helper
 			modprobe vs_drm
 			;;
-		"301")
+		"301"|"302")
 			# RDK X5
 			modprobe rtc-hpu3501
 			modprobe designware_i2s
