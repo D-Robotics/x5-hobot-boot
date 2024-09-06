@@ -53,6 +53,9 @@ start() {
 			modprobe vs-x5-syscon-bridge
 			modprobe drm_kms_helper
 			modprobe vs_drm
+
+			sleep 0.5
+			echo "on" > /sys/class/drm/card0-HDMI-A-1/status
 			;;
 		*)
 			echo "<6>[LoadKo]Unknown board ID: $BOARD_ID. " \
