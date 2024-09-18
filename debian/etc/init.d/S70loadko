@@ -41,6 +41,7 @@ start() {
 			;;
 		"301"|"302")
 			# RDK X5
+			modprobe usb_f_rndis
 			modprobe rtc-hpu3501
 			modprobe designware_i2s
 			modprobe es8311
@@ -53,9 +54,6 @@ start() {
 			modprobe vs-x5-syscon-bridge
 			modprobe drm_kms_helper
 			modprobe vs_drm
-
-			sleep 0.5
-			echo "on" > /sys/class/drm/card0-HDMI-A-1/status
 			;;
 		*)
 			echo "<6>[LoadKo]Unknown board ID: $BOARD_ID. " \
