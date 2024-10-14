@@ -11,7 +11,7 @@ fi
 
 systemctl start hobot-modules-load.service
 
-config_file="/lib/modules-load.d/10-hobot_modules.conf"
+config_file="/lib/modules-load.d/20-hobot_uvcvideo.conf"
 # for modname in `cat ${config_file}`
 while read modname
 do

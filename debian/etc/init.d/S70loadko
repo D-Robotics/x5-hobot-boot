@@ -47,7 +47,6 @@ start() {
 			modprobe es8311
 			modprobe snd_soc_es8326
 			modprobe snd-soc-hobot-sound-duplex-host
-			modprobe panel-wh-cm480
 			modprobe galcore
 			modprobe vio_n2d
 			modprobe sii902x
