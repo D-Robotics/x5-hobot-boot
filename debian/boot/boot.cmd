@@ -14,7 +14,8 @@ run dtb_chose
 echo fdtfile = ${fdtfile}
 
 # setting bootargs
-rootfs_args="rootfstype=ext4 rw rootwait root=/dev/mmcblk${devnum}p${devplist}"
+flash_partitions="ubi.mtd=2,2048 mtdparts=spi7.0:4980735@0x0(miniboot)"
+rootfs_args="rootfstype=ext4 rw rootwait root=/dev/mmcblk${devnum}p${devplist} ${flash_partitions}"
 setenv bootargs "console=tty1 console=ttyS0,115200 ${rootfs_args}"
 echo bootargs = ${bootargs}
 
