@@ -41,6 +41,7 @@ start() {
 			;;
 		"301"|"302")
 			# RDK X5
+			modprobe leds-gpio
 			modprobe usb_f_rndis
 			modprobe rtc-hpu3501
 			modprobe designware_i2s
