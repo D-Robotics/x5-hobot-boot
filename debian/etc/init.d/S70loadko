@@ -54,6 +54,7 @@ start() {
 			modprobe vs-x5-syscon-bridge
 			modprobe drm_kms_helper
 			modprobe vs_drm
+			usr/bin/suspend-button &
 			;;
 		*)
 			echo "<6>[LoadKo]Unknown board ID: $BOARD_ID. " \
