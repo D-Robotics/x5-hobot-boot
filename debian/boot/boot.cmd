@@ -4,9 +4,12 @@ echo "Boot script loaded from devtype:${devtype} devnum:${devnum} devplist:${dev
 
 imagefile="Image"
 
-setenv dtb_chose 'if test "${hb_board_id}" = "0x0201"; then echo "Board is X5 EVB V1"; setenv fdtfile "x5-evb.dtb"; elif test "${hb_board_id}" = "0x0202"; then echo "Board is X5 EVB V2"; setenv fdtfile "x5-evb-v2.dtb"; ' \
-    'elif test "${hb_board_id}" = "0x0301"; then echo "Board is X5 RDK"; setenv fdtfile "x5-rdk.dtb";  ' \
-    'elif test "${hb_board_id}" = "0x0302"; then echo "Board is X5 RDK V1.0"; setenv fdtfile "x5-rdk-v1p0.dtb";  ' \
+setenv dtb_chose 'if test "${hb_board_id}" = "0x0201"; then setenv fdtfile "x5-evb-lp4-1_a.dtb"; ' \
+    'elif test "${hb_board_id}" = "0x0202"; then setenv fdtfile "x5-evb-lp4-1_b.dtb";  ' \
+    'elif test "${hb_board_id}" = "0x0203"; then setenv fdtfile "x5-evb-lp4-v1p2.dtb";  ' \
+    'elif test "${hb_board_id}" = "0x0204"; then setenv fdtfile "x5-evb-lp4-v1p3.dtb";  ' \
+    'elif test "${hb_board_id}" = "0x0301"; then setenv fdtfile "x5-rdk.dtb";  ' \
+    'elif test "${hb_board_id}" = "0x0302"; then setenv fdtfile "x5-rdk-v1p0.dtb";  ' \
     'else echo "Unknown board ID, use x5-rdk.dtb default"; setenv fdtfile "x5-rdk.dtb"; fi; '
 
 run dtb_chose
