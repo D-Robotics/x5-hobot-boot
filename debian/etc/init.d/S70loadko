@@ -1,13 +1,36 @@
 #!/bin/sh
 
-start() {
-	BOARD_ID=$(cat /sys/class/socinfo/board_id)
-	echo "<6>Starting load kernel driver, board ID: $BOARD_ID ..." > /dev/kmsg
-	
-	modprobe vs_isc
-	modprobe vs_cam_ctrl
-	modprobe vs_csi_wrapper
-	modprobe hobot_osd
+CONFIG_FILE="/etc/init.d/v4l2_config"
+ENABLE=0
+SCENE=0
+
+v4l2_camera_modules_load()
+{
+    modprobe imx219
+    modprobe imx477
+    modprobe ov5640
+    modprobe ov5647
+    modprobe sc230ai
+}
+
+v4l2_modules_load()
+{
+    v4l2_camera_modules_load
+    modprobe videobuf2_dma_contig
+    modprobe v4l2_async
+    modprobe vs_cam_ctrl
+    modprobe vs_csi_wrapper
+    modprobe vs_csi2_snps_v4l
+    modprobe vs_sif_v4l
+    modprobe vs_isp_v4l
+    modprobe vs_gdc_arm_v4l
+    modprobe vs_vse_v4l
+    modprobe vs_vid_v4l scene=$SCENE
+}
+
+hbn_modules_load()
+{
+    modprobe hobot_osd
 	modprobe hobot_vin_vnode
 	modprobe hobot_vin_vcon
 	modprobe vs_sif_nat
@@ -20,10 +43,30 @@ start() {
 	modprobe hobot_deserial
 	modprobe hobot_gdc
 	modprobe hobot_isi_sensor
-	modprobe hobot_codec_vnode
 	modprobe hobot_lpwm
+}
+
+start() {
+	BOARD_ID=$(cat /sys/class/socinfo/board_id)
+	echo "<6>Starting load kernel driver, board ID: $BOARD_ID ..." > /dev/kmsg
+
+	if [ -f "$CONFIG_FILE" ]; then
+    	ENABLE=$(grep -E '^enable=' "$CONFIG_FILE" | cut -d'=' -f2)
+    	SCENE=$(grep -E '^scene=' "$CONFIG_FILE" | cut -d'=' -f2)
+	fi
+	
+	modprobe vs_isc
+	modprobe vs_cam_ctrl
+	modprobe vs_csi_wrapper
+	modprobe hobot_codec_vnode
 	modprobe hobot_vpu
 	modprobe hobot_jpu
+
+	if [ "$ENABLE" -eq 0 ]; then
+    		hbn_modules_load
+	else
+		v4l2_modules_load
+	fi
 
 	# bpu driver
 	modprobe bpu_hw_io_x5
