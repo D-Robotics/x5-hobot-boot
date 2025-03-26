@@ -82,7 +82,7 @@ start() {
 			modprobe drm_kms_helper
 			modprobe vs_drm
 			;;
-		"301"|"302")
+		"301"|"302"|"501")
 			# RDK X5
 			modprobe leds-gpio
 			modprobe usb_f_rndis
