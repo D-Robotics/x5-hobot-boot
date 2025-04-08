@@ -10,9 +10,13 @@ for MODULE in "${MODULES[@]}"; do
     fi
 done
 
+ifconfig eth0 down
+
 echo mem > /sys/power/state
 
 sleep 1
+
+ifconfig eth0 up
 
 systemctl restart lightdm
 
