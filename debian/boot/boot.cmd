@@ -5,6 +5,8 @@ echo "Boot script loaded from devtype:${devtype} devnum:${devnum} devplist:${dev
 imagefile="Image"
 
 setenv fdtfile "x5-rdk-v1p0.dtb";
+setenv uart_baudrate "115200";
+
 if test "${hb_board_id}" = "0x0201"; then setenv fdtfile "x5-evb-lp4-1_a.dtb"; fi
 if test "${hb_board_id}" = "0x0202"; then setenv fdtfile "x5-evb-lp4-1_b.dtb"; fi
 if test "${hb_board_id}" = "0x0203"; then setenv fdtfile "x5-evb-lp4-v1p2.dtb"; fi
@@ -12,14 +14,14 @@ if test "${hb_board_id}" = "0x0204"; then setenv fdtfile "x5-evb-lp4-v1p3.dtb"; 
 if test "${hb_board_id}" = "0x0301"; then setenv fdtfile "x5-rdk.dtb"; fi
 if test "${hb_board_id}" = "0x0302"; then setenv fdtfile "x5-rdk-v1p0.dtb"; fi
 if test "${hb_board_id}" = "0x0501"; then setenv fdtfile "x5-md-v0p1.dtb"; fi
-if test "${hb_board_id}" = "0x0502"; then setenv fdtfile "x5-md-v0p2.dtb"; fi
+if test "${hb_board_id}" = "0x0502"; then setenv fdtfile "x5-md-v0p2.dtb"; setenv uart_baudrate "921600"; fi
 
 echo fdtfile = ${fdtfile}
 
 # setting bootargs
 flash_partitions="mtdparts=spi7.0:0x700000@0x0(miniboot),0x180000@0x700000(ubootenv)"
 rootfs_args="rootfstype=ext4 rw rootwait root=/dev/mmcblk${devnum}p${devplist} ${flash_partitions}"
-setenv bootargs "console=tty1 console=ttyS0,115200 ${rootfs_args} hobotboot.reason=${reset_reason}"
+setenv bootargs "console=tty1 console=ttyS0,${uart_baudrate} ${rootfs_args} hobotboot.reason=${reset_reason}"
 echo bootargs = ${bootargs}
 
 echo Loading fdt file: ${prefix}hobot/${fdtfile}
