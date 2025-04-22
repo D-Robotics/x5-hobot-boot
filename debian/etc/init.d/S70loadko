@@ -72,8 +72,8 @@ start() {
 	modprobe bpu_hw_io_x5
 
 	case "$BOARD_ID" in
-		"202")
-			# EVB_1B
+		2*|4*)
+			# EVB
 			modprobe panel-jc-050hd134
 			modprobe galcore
 			modprobe vio_n2d
@@ -82,7 +82,7 @@ start() {
 			modprobe drm_kms_helper
 			modprobe vs_drm
 			;;
-		"301"|"302"|"501")
+		3*|5*)
 			# RDK X5
 			modprobe leds-gpio
 			modprobe usb_f_rndis
