@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CONFIG_FILE="/etc/init.d/v4l2_config"
+CONFIG_FILE="/boot/config.txt"
 ENABLE=0
 SCENE=0
 
@@ -51,8 +51,12 @@ start() {
 	echo "<6>Starting load kernel driver, board ID: $BOARD_ID ..." > /dev/kmsg
 
 	if [ -f "$CONFIG_FILE" ]; then
-    	ENABLE=$(grep -E '^enable=' "$CONFIG_FILE" | cut -d'=' -f2)
-    	SCENE=$(grep -E '^scene=' "$CONFIG_FILE" | cut -d'=' -f2)
+    	if grep -q "v4l2_enable" "$CONFIG_FILE"; then
+		ENABLE=1
+	else
+		ENABLE=0
+	fi
+    	SCENE=$(grep -E '^v4l2_scene=' "$CONFIG_FILE" | cut -d'=' -f2)
 	fi
 	
 	modprobe vs_isc
