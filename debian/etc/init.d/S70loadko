@@ -79,7 +79,11 @@ start() {
 		2*|4*)
 			# EVB
 			modprobe panel-jc-050hd134
-			modprobe galcore
+			if [ -e /etc/X11/xorg.conf.d/2-dr-accel.conf ] ; then
+					modprobe galcore drm=1
+			else
+					modprobe galcore
+			fi
 			modprobe vio_n2d
 			modprobe lontium_lt8618
 			modprobe vs-x5-syscon-bridge
@@ -95,7 +99,11 @@ start() {
 			modprobe es8311
 			modprobe snd_soc_es8326
 			modprobe snd-soc-hobot-sound-duplex-host
-			modprobe galcore
+			if [ -e /etc/X11/xorg.conf.d/2-dr-accel.conf ] ; then
+					modprobe galcore drm=1
+			else
+					modprobe galcore
+			fi
 			modprobe vio_n2d
 			modprobe sii902x
 			modprobe vs-x5-syscon-bridge
