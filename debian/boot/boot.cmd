@@ -18,6 +18,7 @@ if test "${hb_board_id}" = "0x0502"; then setenv fdtfile "x5-md-v0p2.dtb"; seten
 if test "${hb_board_id}" = "0x0503"; then setenv fdtfile "x5-md-v0p2.dtb"; setenv uart_baudrate "921600"; fi
 if test "${hb_board_id}" = "0x0504"; then setenv fdtfile "x5-md-v0p2.dtb"; setenv uart_baudrate "921600"; fi
 if test "${hb_board_id}" = "0x0505"; then setenv fdtfile "x5-md-v0p2.dtb"; setenv uart_baudrate "921600"; fi
+if test "${hb_board_id}" = "0x0506"; then setenv fdtfile "x5-md-v1p2.dtb"; setenv uart_baudrate "921600"; fi
 
 echo fdtfile = ${fdtfile}
 
