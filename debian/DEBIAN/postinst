@@ -1,6 +1,9 @@
 #!/bin/bash
 
-depmod -a 6.1.83
+for kver in /lib/modules/*; do
+    [ -d "$kver" ] || continue
+    depmod -a "$(basename "$kver")" || true
+done
 
 systemctl enable hobot-modules-load.service
 

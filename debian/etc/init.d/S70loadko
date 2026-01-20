@@ -46,76 +46,117 @@ hbn_modules_load()
 	modprobe hobot_lpwm
 }
 
+x3_modules_load()
+{
+    modprobe bpu_framework
+    modprobe iar
+    modprobe hobot_vpu
+    modprobe hobot_jpu
+    modprobe hobot_sif
+    modprobe videobuf-core
+    modprobe videobuf2-core
+    modprobe videobuf2-v4l2
+    modprobe videobuf2-memops
+    modprobe videobuf2-dma-contig
+    modprobe videobuf2-vmalloc
+    modprobe hobot_isp_log
+    modprobe hobot_iq
+    modprobe hobot_sns_bridge
+    modprobe hobot_sensor
+    modprobe hobot_lens
+    modprobe hobot_dwe
+    modprobe hobot_isp
+    modprobe hobot-fb
+    modprobe iar_cdev
+    modprobe hobot_hdmi
+    modprobe iar_mmap
+    modprobe hobot_ipu
+    modprobe hobot_pym
+    modprobe hobot_gdc
+    modprobe hobot_osd
+    modprobe hobot_spidev
+    modprobe ch341
+    modprobe cp210x
+    modprobe ftdi_sio
+    modprobe led-class
+    modprobe leds-gpio
+}
+
 start() {
 	BOARD_ID=$(cat /sys/class/socinfo/board_id)
-	echo "<6>Starting load kernel driver, board ID: $BOARD_ID ..." > /dev/kmsg
+	SOC_GEN=$(cat /sys/class/socinfo/soc_gen)
+	echo "<6>Starting load kernel driver, soc_gen $SOC_GEN board ID: $BOARD_ID ..." > /dev/kmsg
 
-	if [ -f "$CONFIG_FILE" ]; then
-    	if grep -q "v4l2_enable" "$CONFIG_FILE"; then
-		ENABLE=1
-	else
-		ENABLE=0
-	fi
-    	SCENE=$(grep -E '^v4l2_scene=' "$CONFIG_FILE" | cut -d'=' -f2)
-	fi
-	
-	modprobe vs_isc
-	modprobe vs_cam_ctrl
-	modprobe vs_csi_wrapper
-	modprobe hobot_codec_vnode
-	modprobe hobot_vpu
-	modprobe hobot_jpu
+	if echo "$SOC_GEN" | grep -qi "x5"; then
+		if [ -f "$CONFIG_FILE" ]; then
+			if grep -q "v4l2_enable" "$CONFIG_FILE"; then
+			ENABLE=1
+		else
+			ENABLE=0
+		fi
+			SCENE=$(grep -E '^v4l2_scene=' "$CONFIG_FILE" | cut -d'=' -f2)
+		fi
+		
+		modprobe vs_isc
+		modprobe vs_cam_ctrl
+		modprobe vs_csi_wrapper
+		modprobe hobot_codec_vnode
+		modprobe hobot_vpu
+		modprobe hobot_jpu
 
-	if [ "$ENABLE" -eq 0 ]; then
-    		hbn_modules_load
-	else
-		v4l2_modules_load
-	fi
+		if [ "$ENABLE" -eq 0 ]; then
+				hbn_modules_load
+		else
+			v4l2_modules_load
+		fi
 
-	# bpu driver
-	modprobe bpu_hw_io_x5
+		# bpu driver
+		modprobe bpu_hw_io_x5
 
-	case "$BOARD_ID" in
-		2*|4*)
-			# EVB
-			modprobe panel-jc-050hd134
-			if [ -e /etc/X11/xorg.conf.d/2-dr-accel.conf ] ; then
-					modprobe galcore drm=1
-			else
-					modprobe galcore
-			fi
-			modprobe vio_n2d
-			modprobe lontium_lt8618
-			modprobe vs-x5-syscon-bridge
-			modprobe drm_kms_helper
-			modprobe vs_drm
-			;;
-		3*|5*)
-			# RDK X5
-			modprobe leds-gpio
-			modprobe usb_f_rndis
-			modprobe rtc-hpu3501
-			modprobe designware_i2s
-			modprobe es8311
-			modprobe snd_soc_es8326
-			modprobe snd-soc-hobot-sound-duplex-host
-			if [ -e /etc/X11/xorg.conf.d/2-dr-accel.conf ] ; then
-					modprobe galcore drm=1
-			else
-					modprobe galcore
-			fi
-			modprobe vio_n2d
-			modprobe sii902x
-			modprobe vs-x5-syscon-bridge
-			modprobe drm_kms_helper
-			modprobe vs_drm
-			;;
-		*)
-			echo "<6>[LoadKo]Unknown board ID: $BOARD_ID. " \
-				"Please contact the development team to " \
-				"provide support for this hardware." > /dev/kmsg
-			;;
+		case "$BOARD_ID" in
+			2*|4*)
+				# EVB
+				modprobe panel-jc-050hd134
+				if [ -e /etc/X11/xorg.conf.d/2-dr-accel.conf ] ; then
+						modprobe galcore drm=1
+				else
+						modprobe galcore
+				fi
+				modprobe vio_n2d
+				modprobe lontium_lt8618
+				modprobe vs-x5-syscon-bridge
+				modprobe drm_kms_helper
+				modprobe vs_drm
+				;;
+			3*|5*)
+				# RDK X5
+				modprobe leds-gpio
+				modprobe usb_f_rndis
+				modprobe rtc-hpu3501
+				modprobe designware_i2s
+				modprobe es8311
+				modprobe snd_soc_es8326
+				modprobe snd-soc-hobot-sound-duplex-host
+				if [ -e /etc/X11/xorg.conf.d/2-dr-accel.conf ] ; then
+						modprobe galcore drm=1
+				else
+						modprobe galcore
+				fi
+				modprobe vio_n2d
+				modprobe sii902x
+				modprobe vs-x5-syscon-bridge
+				modprobe drm_kms_helper
+				modprobe vs_drm
+				;;
+			*)
+				echo "<6>[LoadKo]Unknown board ID: $BOARD_ID. " \
+					"Please contact the development team to " \
+					"provide support for this hardware." > /dev/kmsg
+				;;
 		esac
+	else
+		x3_modules_load
+	fi
 }
 
 case "$1" in
