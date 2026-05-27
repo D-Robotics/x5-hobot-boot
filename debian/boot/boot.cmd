@@ -8,6 +8,15 @@ if test "${soc}" = "x5"; then
 setenv fdtfile "x5-rdk-v1p0.dtb";
 setenv uart_baudrate "115200";
 
+if test -e ${devtype} ${devnum}:${devplist} ${prefix}Image.lz4; then
+    echo "Found ${prefix}Image.lz4, using compressed kernel"
+    setenv imagefile "Image.lz4";
+    setenv kernel_comp_addr_r 0x88000000;
+    setenv kernel_comp_size 0x4000000;
+else
+    echo "${prefix}Image.lz4 not found, using default Image"
+fi
+
 if test "${hb_board_id}" = "0x0201"; then setenv fdtfile "x5-evb-lp4-1_a.dtb"; fi
 if test "${hb_board_id}" = "0x0202"; then setenv fdtfile "x5-evb-lp4-1_b.dtb"; fi
 if test "${hb_board_id}" = "0x0203"; then setenv fdtfile "x5-evb-lp4-v1p2.dtb"; fi
