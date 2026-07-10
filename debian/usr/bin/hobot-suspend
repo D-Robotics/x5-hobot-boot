@@ -9,7 +9,7 @@ fi
 
 touch "$LOCK_FILE"
 
-MODULES=("snd_soc_hobot_sound_duplex_host" "snd_soc_es8326" "aic8800_fdrv" "aic8800_bsp")
+MODULES=("aic8800_fdrv" "aic8800_bsp")
 NUM_MODULES=${#MODULES[@]}
 
 for MODULE in "${MODULES[@]}"; do
