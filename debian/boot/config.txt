@@ -1,0 +1,3 @@
+# Boot display configuration, read by U-Boot before x5_boot_ui decision.
+# Standard location: /boot/config.txt on the rootfs.
+x5_boot_ui=console

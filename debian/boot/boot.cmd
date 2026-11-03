@@ -37,7 +37,13 @@ echo fdtfile = ${fdtfile}
 if test "${soc}" = "x5"; then
 flash_partitions="mtdparts=spi7.0:0x700000@0x0(miniboot),0x180000@0x700000(ubootenv)"
 rootfs_args="rootfstype=ext4 rw rootwait root=/dev/mmcblk${devnum}p${devplist} ${flash_partitions}"
-setenv bootargs "console=tty1 console=ttyS0,${uart_baudrate} ${rootfs_args} hobotboot.reason=${reset_reason}"
+if test "${x5_boot_ui}" = "console"; then
+setenv console_args "console=tty0 console=ttyS0,${uart_baudrate}"
+else
+setenv console_args "console=ttyS0,${uart_baudrate} fbcon=map:1"
+fi
+# RDK X5: surface config.txt source + logo source for user observability
+setenv bootargs "${console_args} ${rootfs_args} hobotboot.reason=${reset_reason} x5_boot_ui=${x5_boot_ui} x5_cfgsrc=${x5_cfgsrc} x5_logosrc=${x5_logosrc}"
 elif test "${soc}" = "xj3"; then
 flash_partitions="ubi.mtd=2,2048 mtdparts=hr_nand.0:6291456@0x0(miniboot),2097152@0x600000(env) "
 rootfs_args="rootfstype=ext4 rw rootwait root=/dev/mmcblk${devnum}p${devplist}"
